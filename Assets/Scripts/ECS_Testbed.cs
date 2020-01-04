@@ -16,6 +16,12 @@ public class ECS_Testbed : MonoBehaviour
     public Transform ObjectToMove;
     [SerializeField]
     public int NumberOfObjects = 1000;
+    [SerializeField]
+    public int XSpread = 10;
+    [SerializeField]
+    public int YSpread = 10;
+    [SerializeField]
+    public int ZSpread = 10;
 
     private void Start()
     {
@@ -25,9 +31,9 @@ public class ECS_Testbed : MonoBehaviour
         {
             Transform instance = Instantiate(
                 ObjectToMove,
-                new Vector3(UnityEngine.Random.Range(-18f, 18f),
-                            UnityEngine.Random.Range(-10f, 10f),
-                            UnityEngine.Random.Range(-10f, 10f)), Quaternion.identity);
+                new Vector3(UnityEngine.Random.Range(-XSpread, XSpread),
+                            UnityEngine.Random.Range(-YSpread, YSpread),
+                            UnityEngine.Random.Range(-ZSpread, ZSpread)), Quaternion.identity);
 
             _moveableObjects.Add(new ZMoveableObject
             {
