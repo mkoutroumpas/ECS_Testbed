@@ -13,7 +13,7 @@ public class ECS_Testbed : MonoBehaviour
     [SerializeField]
     public bool UseJobSystem = true;
     [SerializeField]
-    public bool UsePlainGameObjects = true;
+    public bool UsePlainGameObjects = false;
     [SerializeField]
     public Transform ObjectToMove;
     [SerializeField]
