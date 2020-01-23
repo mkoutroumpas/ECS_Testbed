@@ -15,6 +15,8 @@ public class ECS_Testbed : MonoBehaviour
     [SerializeField]
     public bool UseJobSystem = true;
     [SerializeField]
+    public bool UseECS = true;
+    [SerializeField]
     public GameObject ObjectToMove;
     [SerializeField]
     public int NumberOfObjects = 1000;
@@ -40,12 +42,21 @@ public class ECS_Testbed : MonoBehaviour
                 UnityEngine.Random.Range(-YSpread, YSpread),
                 UnityEngine.Random.Range(-ZSpread, ZSpread));
 
-            var entityInstance = _entityManager.Instantiate(entity);
-            _entityManager.SetComponentData(entityInstance, new Translation { Value = position });
+            object instance;
+
+            if (UseECS)
+            {
+                instance = _entityManager.Instantiate(entity);
+                _entityManager.SetComponentData((Entity)instance, new Translation { Value = position });
+            }
+            else
+            {
+                instance = Instantiate(ObjectToMove.transform, position, Quaternion.identity);
+            }
 
             _moveableObjects.Add(new ZMoveableObject
             {
-                Entity = entityInstance,
+                Entity = instance,
                 Position = position,
                 Velocity = UnityEngine.Random.Range(0.1f, 1.0f)
             });
@@ -80,9 +91,15 @@ public class ECS_Testbed : MonoBehaviour
 
             for (var i = 0; i < _moveableObjects.Count; i++)
             {
-                _moveableObjects[i].Position = _positions[i];
-
-                _entityManager.SetComponentData(_moveableObjects[i].Entity, new Translation { Value = _moveableObjects[i].Position });
+                if (UseECS)
+                {
+                    _moveableObjects[i].Position = _positions[i];
+                    _entityManager.SetComponentData((Entity)_moveableObjects[i].Entity, new Translation { Value = _moveableObjects[i].Position });
+                }
+                else
+                {
+                    ((Transform)_moveableObjects[i].Entity).position = _positions[i];
+                }
             }
 
             _velocities.Dispose();
@@ -92,7 +109,7 @@ public class ECS_Testbed : MonoBehaviour
         {
             for (var i = 0; i < _moveableObjects.Count; i++)
             {
-                _moveableObjects[i].Position += new Vector3(0f, 0f, -_moveableObjects[i].Velocity * Time.deltaTime);
+                ((Transform)_moveableObjects[i].Entity).position += new Vector3(0f, 0f, -_moveableObjects[i].Velocity * Time.deltaTime);
                 Helpers.AddDummyHeavyTask();
             }
         }
@@ -102,7 +119,7 @@ public class ECS_Testbed : MonoBehaviour
 
     public class ZMoveableObject
     {
-        public Entity Entity;
+        public object Entity;
         public Vector3 Position;
         public float Velocity;
     }
