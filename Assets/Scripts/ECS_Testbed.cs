@@ -25,6 +25,7 @@ public class ECS_Testbed : MonoBehaviour
     [SerializeField]
     public int ZSpread = 10;
 
+    //  Instantiate NumberOfObjects cubes and position them randomly within a specified range.
     private void Start()
     {
         _moveableObjects = new List<ZMoveableObject>();
@@ -52,6 +53,7 @@ public class ECS_Testbed : MonoBehaviour
         }
     }
 
+    //  Optionally support updating Cubes positioning using ECS Jobs. 
     private void Update()
     {
         float startTime = Time.realtimeSinceStartup;
@@ -100,6 +102,7 @@ public class ECS_Testbed : MonoBehaviour
         Debug.Log(((Time.realtimeSinceStartup - startTime) * 1000f) + "ms");
     }
 
+    //  Simple wrapper class for cube Entities.
     public class ZMoveableObject
     {
         public Entity Entity;

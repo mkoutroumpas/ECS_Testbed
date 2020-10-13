@@ -4,6 +4,7 @@ namespace Assets.Scripts.Classes
 {
     public static class Helpers
     {
+        //  Simulate a computationally daunting task.
         public static void AddDummyHeavyTask(int length = 1000)
         {
             float value = 0f;

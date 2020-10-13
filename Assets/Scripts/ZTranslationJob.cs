@@ -16,6 +16,7 @@ public struct ZTranslationJob : IJobParallelFor
     [ReadOnly]
     public bool MinusDirection;
 
+    //  Translate Entity along the Z-axis.
     public void Execute(int index)
     {
         Positions[index] += new float3(0f, 0f, (MinusDirection ? -1 : 1) * MoveSpeeds[index] * DeltaTime);
